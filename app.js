@@ -511,12 +511,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     } else {
-      // Standard item (Aim Assist)
+      // Open access items or items without password requirement
       if (passwordStepContainer) passwordStepContainer.style.display = "none";
       if (dlButtonGroup) dlButtonGroup.style.display = "flex";
-      if (unlockModalTitle) unlockModalTitle.textContent = "Subscribe to Unlock Download";
+
+      const isRadar = activeDropItem && activeDropItem.id === "kaiser-audio-radar";
+      if (unlockModalTitle) {
+        unlockModalTitle.textContent = isRadar ? "Unlock Kaiser Audio Radar (Audio ESP)" : "Subscribe to Unlock Download";
+      }
       if (unlockModalDesc) {
-        unlockModalDesc.innerHTML = "You get clean competitive freeware for <b>$0.00</b>, and I get one subscriber closer to saving Rivals. Hit subscribe below to unlock instantly.";
+        if (isRadar) {
+          unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube to support the Rivals Resistance. <b>The dedicated ESP video is releasing soon on YouTube!</b> In the meantime, website visitors can download Kaiser Audio Radar v1.0 directly below.";
+        } else {
+          unlockModalDesc.innerHTML = "You get clean competitive freeware for <b>$0.00</b>, and I get one subscriber closer to saving Rivals. Hit subscribe below to unlock instantly.";
+        }
       }
 
       if (isAuraUnlocked) {
@@ -525,11 +533,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnDlFinal) {
           btnDlFinal.disabled = false;
           btnDlFinal.className = "btn-dl-unlocked";
-          btnDlFinal.innerHTML = `<span>🔓 DIRECT DOWNLOAD (.ZIP FREE)</span>`;
+          const label = isRadar ? "DOWNLOAD KAISER AUDIO RADAR (.ZIP FREE)" : (activeDropItem && activeDropItem.fileName ? `DIRECT DOWNLOAD (${activeDropItem.fileName})` : "DIRECT DOWNLOAD (.ZIP FREE)");
+          btnDlFinal.innerHTML = `<span>🔓 ${label}</span>`;
         }
         if (dlVerifiedNote) {
           dlVerifiedNote.style.display = "block";
-          dlVerifiedNote.textContent = "✓ Clean Freeware · 100% Free & Verified Clean";
+          dlVerifiedNote.textContent = isRadar 
+            ? "✓ Verified Clean · Kaiser-Audio-Radar-v1.0.zip · 100% Free & Unbannable"
+            : "✓ Clean Freeware · 100% Free & Verified Clean";
         }
         if (stepDlLabel) stepDlLabel.textContent = "Verified · Ready for Download";
       } else {

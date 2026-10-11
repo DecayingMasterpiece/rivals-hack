@@ -12,9 +12,9 @@ const KAISER_SITE_INFO = {
   brandName: "KAISER HACKS",
   brandSubtitle: "The End of All Stories · Saving Roblox Rivals",
   
-  // 👉 CONNECTED YOUTUBE SHOWCASE VIDEO (Placeholder until official video releases):
-  videoEmbedId: "dQw4w9WgXcQ", 
-  videoWatchUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation/videos",
+  // 👉 FRONT-PAGE HERO SHOWCASE VIDEO (Original Kaiser Video):
+  videoEmbedId: "OUNl81bv4f0", 
+  videoWatchUrl: "https://www.youtube.com/watch?v=OUNl81bv4f0",
 
   // 👉 OFFICIAL RADAR DIRECT DOWNLOAD:
   radarDownloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
@@ -52,8 +52,9 @@ const KAISER_DROPS = [
     currentPrice: "$0.00 FREE",
     downloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
     fileName: "Kaiser-Audio-Radar-v1.0.zip",
-    requiresPassword: false, // Set to false for now so visitors can install directly; toggle to true once video goes live
+    requiresPassword: false, // Set to false for now so visitors can install directly; toggle to true once ESP video drops
     passwordHash: "038377ce6cd93768368075691b7086c97ded38d84d469b64740fced9d516628f",
+    espVideoUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation/videos", // Upcoming dedicated ESP video
     downloadLabel: "DOWNLOAD NOW · FREEWARE",
     category: "active",
     badge: "100% UNBANNABLE · ACCESSIBILITY STANDARD",
@@ -71,8 +72,8 @@ const KAISER_DROPS = [
     ],
     setupSteps: [
       "Subscribe to Kaiser on YouTube to support the crusade to save Rivals.",
-      "Click Unlock to begin your direct download (instant download for website visitors).",
-      "Download and extract 'Kaiser-Audio-Radar-v1.0.zip'.",
+      "Watch the upcoming ESP video on YouTube once released for full gameplay proof & configuration.",
+      "Download and extract 'Kaiser-Audio-Radar-v1.0.zip' (Instant download enabled for website visitors).",
       "Run 'Run_Windows.bat' on Windows or 'Run_Mac.command' on Mac.",
       "Select your headphones/speakers from the dropdown, hit Start, and dominate your matches with complete spatial awareness!"
     ],
