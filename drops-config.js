@@ -12,9 +12,9 @@ const KAISER_SITE_INFO = {
   brandName: "KAISER HACKS",
   brandSubtitle: "The End of All Stories · Saving Roblox Rivals",
   
-  // 👉 FRONT-PAGE HERO SHOWCASE VIDEO (Original Kaiser Video):
-  videoEmbedId: "OUNl81bv4f0", 
-  videoWatchUrl: "https://www.youtube.com/watch?v=OUNl81bv4f0",
+  // 👉 FRONT-PAGE HERO SHOWCASE VIDEO (Official Rivals ESP Release):
+  videoEmbedId: "lD9Qxc41Egg", 
+  videoWatchUrl: "https://www.youtube.com/watch?v=lD9Qxc41Egg",
 
   // 👉 OFFICIAL RADAR DIRECT DOWNLOAD:
   radarDownloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
@@ -29,12 +29,12 @@ const KAISER_SITE_INFO = {
   discordUrl: "https://discord.com/invite/vRu6bYdTWF",
 
   rivalStats: {
-    kaiserSubs: 25900,
-    kaiserSubsLabel: "25.9K",
-    coraxSubs: 29700,
-    coraxSubsLabel: "29.7K",
-    gap: 3800,
-    gapLabel: "3.8K"
+    kaiserSubs: 28000,
+    kaiserSubsLabel: "28K",
+    coraxSubs: 30700,
+    coraxSubsLabel: "30.7K",
+    gap: 2700,
+    gapLabel: "2.7K"
   }
 };
 
@@ -52,10 +52,10 @@ const KAISER_DROPS = [
     currentPrice: "$0.00 FREE",
     downloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
     fileName: "Kaiser-Audio-Radar-v1.0.zip",
-    requiresPassword: false, // Set to false for now so visitors can install directly; toggle to true once ESP video drops
+    requiresPassword: true, // Mandatory 2-step verification: Subscribe + 10-Letter Video Password
     passwordHash: "038377ce6cd93768368075691b7086c97ded38d84d469b64740fced9d516628f",
-    espVideoUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation/videos", // Upcoming dedicated ESP video
-    downloadLabel: "DOWNLOAD NOW · FREEWARE",
+    espVideoUrl: "https://www.youtube.com/watch?v=lD9Qxc41Egg", // Official ESP Video
+    downloadLabel: "UNLOCK FREE DOWNLOAD",
     category: "active",
     badge: "100% UNBANNABLE · ACCESSIBILITY STANDARD",
     shortDesc: "Visualizes footsteps and gunfire directly on your crosshair and mini radar. 100% legal, zero memory injection, levels the playing field against closet cheaters.",
@@ -71,10 +71,10 @@ const KAISER_DROPS = [
       "1-Click Toggle Controls — Press Home for Crosshair HUD, End for Mini Radar"
     ],
     setupSteps: [
-      "Subscribe to Kaiser on YouTube to support the crusade to save Rivals.",
-      "Watch the upcoming ESP video on YouTube once released for full gameplay proof & configuration.",
-      "Download and extract 'Kaiser-Audio-Radar-v1.0.zip' (Instant download enabled for website visitors).",
-      "Run 'Run_Windows.bat' on Windows or 'Run_Mac.command' on Mac.",
+      "Subscribe to Kaiser on YouTube using the confirmation link to support the crusade to save Rivals.",
+      "Watch the official video (https://youtu.be/lD9Qxc41Egg) to find the 10-letter secret password in ALL CAPS.",
+      "Enter the 10-letter password in the unlock gateway to verify and download 'Kaiser-Audio-Radar-v1.0.zip'.",
+      "Extract the ZIP, then run 'Run_Windows.bat' on Windows or 'Run_Mac.command' on Mac.",
       "Select your headphones/speakers from the dropdown, hit Start, and dominate your matches with complete spatial awareness!"
     ],
     stats: {

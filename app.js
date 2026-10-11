@@ -480,7 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (needsPassword) {
       if (unlockModalTitle) unlockModalTitle.textContent = "Unlock Kaiser Audio Radar";
       if (unlockModalDesc) {
-        unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube to support the Rivals Resistance, then enter the 10-letter secret video password (revealed across the YouTube video) to download.";
+        unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube, then watch the official video (<a href='https://youtu.be/lD9Qxc41Egg' target='_blank' rel='noopener noreferrer' style='color:var(--color-cyan);text-decoration:underline;'>https://youtu.be/lD9Qxc41Egg</a>) to find the <b>10-letter secret password in ALL CAPS</b> to unlock your clean download.";
       }
 
       if (isRadarUnlocked) {
@@ -564,11 +564,67 @@ document.addEventListener("DOMContentLoaded", () => {
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
+  // Security anti-guess rate limiter
+  let lockoutInterval = null;
+  function checkLockoutStatus() {
+    const lockoutUntil = parseInt(sessionStorage.getItem("kaiser_lockout_until") || "0", 10);
+    const now = Date.now();
+    if (lockoutUntil > now) {
+      const remainingSec = Math.ceil((lockoutUntil - now) / 1000);
+      if (passErrorMsg) {
+        passErrorMsg.innerHTML = `🔒 <b>Cooldown Active:</b> Too many incorrect guesses. Watch the full video (<a href="https://youtu.be/lD9Qxc41Egg" target="_blank" rel="noopener noreferrer" style="color:var(--color-cyan);text-decoration:underline;">https://youtu.be/lD9Qxc41Egg</a>) to find the 10-letter key.<br>Please wait <b>${remainingSec}s</b> before guessing again.`;
+        passErrorMsg.style.display = "block";
+      }
+      if (unlockPassInput) unlockPassInput.disabled = true;
+      if (btnVerifyKey) btnVerifyKey.disabled = true;
+      if (!lockoutInterval) {
+        lockoutInterval = setInterval(() => checkLockoutStatus(), 1000);
+      }
+      return true;
+    } else {
+      if (lockoutInterval) {
+        clearInterval(lockoutInterval);
+        lockoutInterval = null;
+      }
+      sessionStorage.removeItem("kaiser_lockout_until");
+      if (unlockPassInput) unlockPassInput.disabled = false;
+      if (btnVerifyKey) btnVerifyKey.disabled = false;
+      return false;
+    }
+  }
+
   // Password verification logic
   async function handlePasswordVerify() {
     if (!unlockPassInput) return;
+    if (checkLockoutStatus()) return;
+
     const rawVal = unlockPassInput.value.trim().toUpperCase().replace(/[\s-]/g, "");
-    if (!rawVal) return;
+    if (!rawVal) {
+      if (passErrorMsg) {
+        passErrorMsg.innerHTML = `⚠️ Please enter the 10-letter password. <a href="https://youtu.be/lD9Qxc41Egg" target="_blank" rel="noopener noreferrer" style="color:var(--color-cyan);text-decoration:underline;">Watch the video here</a> to find it.`;
+        passErrorMsg.style.display = "block";
+      }
+      return;
+    }
+
+    if (rawVal.length !== 10) {
+      let attempts = parseInt(sessionStorage.getItem("kaiser_pass_attempts") || "0", 10) + 1;
+      sessionStorage.setItem("kaiser_pass_attempts", attempts.toString());
+      playErrorSound();
+      if (attempts >= 3) {
+        sessionStorage.setItem("kaiser_lockout_until", (Date.now() + 30000).toString());
+        sessionStorage.setItem("kaiser_pass_attempts", "0");
+        checkLockoutStatus();
+        return;
+      }
+      if (passErrorMsg) {
+        passErrorMsg.innerHTML = `❌ Key must be exactly <b>10 letters in ALL CAPS</b> (${attempts}/3 guesses used). Watch the full video: <a href="https://youtu.be/lD9Qxc41Egg" target="_blank" rel="noopener noreferrer" style="color:var(--color-cyan);text-decoration:underline;">https://youtu.be/lD9Qxc41Egg</a>`;
+        passErrorMsg.style.display = "block";
+      }
+      unlockPassInput.classList.add("shake-error");
+      setTimeout(() => unlockPassInput.classList.remove("shake-error"), 500);
+      return;
+    }
 
     const targetHash = (activeDropItem && activeDropItem.passwordHash) 
       ? activeDropItem.passwordHash 
@@ -577,24 +633,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputHash = await computeSha256(rawVal);
 
     if (inputHash === targetHash) {
+      sessionStorage.removeItem("kaiser_pass_attempts");
+      sessionStorage.removeItem("kaiser_lockout_until");
       playUnlockSound();
       fireConfetti();
       localStorage.setItem("kaiser_radar_unlocked", "true");
+      isRadarUnlocked = true;
       isAuraUnlocked = true;
       localStorage.setItem("kaiser_aura_unlocked", "true");
-      showToast("Access Granted! Secret Key Verified", "🎉");
+      showToast("Access Granted! 10-Letter Key Verified 🎉", "🎉");
       updateUnlockUI();
       renderDrops();
       triggerDirectDownload(activeDropItem);
     } else {
+      let attempts = parseInt(sessionStorage.getItem("kaiser_pass_attempts") || "0", 10) + 1;
+      sessionStorage.setItem("kaiser_pass_attempts", attempts.toString());
       playErrorSound();
-      if (passErrorMsg) {
-        passErrorMsg.textContent = "❌ Invalid Key! Watch the full video to collect all 10 letters (No skipping!).";
-        passErrorMsg.style.display = "block";
+      if (attempts >= 3) {
+        sessionStorage.setItem("kaiser_lockout_until", (Date.now() + 30000).toString());
+        sessionStorage.setItem("kaiser_pass_attempts", "0");
+        checkLockoutStatus();
+      } else {
+        if (passErrorMsg) {
+          passErrorMsg.innerHTML = `❌ Invalid Key! (${attempts}/3 guesses used). The password is a 10-letter key in ALL CAPS scattered across the YouTube video: <a href="https://youtu.be/lD9Qxc41Egg" target="_blank" rel="noopener noreferrer" style="color:var(--color-cyan);text-decoration:underline;">https://youtu.be/lD9Qxc41Egg</a> (No skipping!).`;
+          passErrorMsg.style.display = "block";
+        }
+        unlockPassInput.classList.add("shake-error");
+        setTimeout(() => unlockPassInput.classList.remove("shake-error"), 500);
+        showToast("Incorrect key! Watch the YouTube video.", "⚠️");
       }
-      unlockPassInput.classList.add("shake-error");
-      setTimeout(() => unlockPassInput.classList.remove("shake-error"), 500);
-      showToast("Incorrect key! Check the YouTube video.", "⚠️");
     }
   }
 
@@ -606,6 +673,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (unlockPassInput) {
+    unlockPassInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.toUpperCase();
+    });
     unlockPassInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -676,8 +746,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("kaiser_aura_unlocked", "true");
       updateUnlockUI();
       playUnlockSound();
-      fireConfetti();
-      showToast("Real one recognized! Aura verified.", "😎");
+      showToast("Subscription verified! Now enter the 10-letter video password.", "🔑");
       renderDrops();
     });
   }
