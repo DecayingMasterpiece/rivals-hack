@@ -89,7 +89,7 @@ const KAISER_DROPS = [
     title: "Kaiser Aim Assist v2.1 (Anti-Cheat & Avira Safety Patch)",
     subtitle: "Universal Mouse Anti-Jitter & Aim Stabilizer",
     status: "active",
-    statusLabel: "AVAILABLE NOW · CLEAN PATCH",
+    statusLabel: "AVAILABLE NOW · SUBSCRIBE TO UNLOCK",
     tag: "AURA STABILIZER",
     tagColor: "emerald",
     image: "assets/kaiser-logo.jpg",
@@ -98,11 +98,12 @@ const KAISER_DROPS = [
     downloadUrl: "https://github.com/toufiqbd4200-sketch/rivals-hack/releases/download/v2.0/KaiserAimAssist-v2.0.zip",
     fileName: "KaiserAimAssist-v2.0.zip",
     requiresPassword: false,
-    downloadLabel: "UNLOCK FREE DOWNLOAD",
+    requiresSubscribe: true,
+    downloadLabel: "SUBSCRIBE TO UNLOCK",
     category: "active",
     badge: "100% CLEAN · 1:1 PASSTHROUGH",
-    shortDesc: "Strips hand tremors, tension wobbles, and shaky mouse aim. 100% legit, WHQL-signed, Avira safe, infinite aura.",
-    description: "Imagine paying $50 a month to a cheat seller named after a bird just to get hardware banned in three business days. Couldn't be me. Kaiser Hacks gives you physical mouse stabilization at the system level. No shady memory injections, no game file tampering—just crystal clean, locked-in aim that feels like natural talent. You hit clips, cheat sellers cry, and everyone wins.",
+    shortDesc: "Strips hand tremors, tension wobbles, and shaky mouse aim. Subscribe to unlock clean v2.1 ZIP for $0.00 free.",
+    description: "Imagine paying $50 a month to a cheat seller named after a bird just to get hardware banned in three business days. Couldn't be me. Kaiser Hacks gives you physical mouse stabilization at the system level. No shady memory injections, no game file tampering—just crystal clean, locked-in aim that feels like natural talent. Subscribe to unlock the free package. You hit clips, cheat sellers cry, and everyone wins.",
     features: [
       "Zero Shaky Aim — Removes micro-jitters, hand tension wobbles, and sensor noise",
       "Strict 1:1 Muscle Memory — 1:1 hardware passthrough preserves your exact physical mouse sensitivity",
@@ -133,10 +134,10 @@ const KAISER_DROPS = [
   },
   {
     id: "the-watchdog",
-    title: "The Watchdog AI (Anti-Cheat Sentry)",
-    subtitle: "Autonomous Server-Side Moderator for Nosni Games",
+    title: "The Watchdog AI (KE Anti-Cheat System)",
+    subtitle: "Autonomous Server-Side Moderator for Nosniy Games",
     status: "coming_soon",
-    statusLabel: "LAUNCHING AT 100K SUBSCRIBERS / NOSNI PARTNERSHIP",
+    statusLabel: "LAUNCHING AT 100K SUBSCRIBERS / NOSNIY PARTNERSHIP",
     tag: "THE WATCHDOG",
     tagColor: "amber",
     image: "assets/espn.jpg",
@@ -146,9 +147,9 @@ const KAISER_DROPS = [
     requiresPassword: false,
     downloadLabel: "SUBSCRIBE TO SUPPORT THE PETITION",
     category: "upcoming",
-    badge: "IN DEVELOPMENT · NOSNI PARTNERSHIP",
-    shortDesc: "Autonomous 24/7 backend AI sentry that reviews reported gameplay telemetry and bans rage cheaters within 2–3 minutes.",
-    description: "The permanent cure for Rivals cheating. An autonomous digital moderator living inside the server architecture. When players report a cheater, the sentry analyzes raw gameplay telemetry with consent, verifies angular snaps and flight speed, and strikes them with a permanent ban before the match finishes. We are bringing this directly to Nosni Games once we hit 100,000 subscribers and verification.",
+    badge: "IN DEVELOPMENT · NOSNIY PARTNERSHIP",
+    shortDesc: "Our proprietary KE System can potentially remove rage cheating forever. If Kaiser becomes a security developer with Nosniy Games, closet cheating will be eliminated too.",
+    description: "The permanent cure for Rivals cheating. Our proprietary KE System (The Watchdog) is an autonomous digital moderator living inside the server architecture. When players report a cheater, the sentry analyzes raw gameplay telemetry with consent, verifies angular snaps and flight speed, and strikes them with a permanent ban within 2–3 minutes. Rage cheating dies here. If I become a security developer with Nosniy Games, I will remove closet cheating too. Nosniy Games will only take notice if we reach 100,000 subscribers and verification—support every video, short, and post to make it go viral!",
     features: [
       "Autonomous 24/7 Server Sentry — Operates continuously without relying on slow manual ticket backlogs",
       "15-Second Telemetry Snapshots — Analyzes player camera angles, impossible flick speeds, and physics anomalies",
@@ -157,9 +158,9 @@ const KAISER_DROPS = [
       "Exclusive In-Game Security Badge — Reserved for founding channel subscribers who stood with us from day one"
     ],
     setupSteps: [
-      "Subscribe to Kaiser on YouTube to build our subscriber leverage for Nosni Games.",
-      "Support every video and short to get the channel verified.",
-      "At 100,000 subscribers, we sit down with Nosni Games to integrate The Watchdog directly."
+      "Subscribe to Kaiser on YouTube to build our subscriber leverage for Nosniy Games.",
+      "Support every video, short, and community post to make the movement go viral across YouTube.",
+      "At 100,000 subscribers and verification, we sit down with Nosniy Games to integrate The Watchdog and join as security developer."
     ],
     stats: {
       latency: "Real-time Telemetry",

@@ -317,9 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = `drop-card ${item.status === "coming_soon" ? "coming-soon" : ""}`;
       card.setAttribute("data-id", item.id);
 
-      const isItemUnlocked = item.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
+      const isItemUnlocked = item.requiresPassword 
+        ? (localStorage.getItem("kaiser_radar_unlocked") === "true") 
+        : (localStorage.getItem("kaiser_aim_unlocked") === "true");
       const btnLabel = item.status === "active" 
-        ? (isItemUnlocked ? "DOWNLOAD NOW" : (item.requiresPassword ? "KEY UNLOCK" : "GET FREE")) 
+        ? (isItemUnlocked ? "DOWNLOAD NOW" : (item.requiresPassword ? "KEY UNLOCK" : "SUBSCRIBE TO UNLOCK")) 
         : "DETAILS";
 
       card.innerHTML = `
@@ -384,13 +386,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Modal CTA Button text based on status and unlock state
     if (item.status === "active") {
-      const isKeyUnlocked = item.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
-      if (isKeyUnlocked) {
+      const isItemUnlocked = item.requiresPassword 
+        ? (localStorage.getItem("kaiser_radar_unlocked") === "true") 
+        : (localStorage.getItem("kaiser_aim_unlocked") === "true");
+
+      if (isItemUnlocked) {
         modalDownloadBtn.textContent = "⚡ DIRECT DOWNLOAD (.ZIP FREE)";
       } else if (item.requiresPassword) {
         modalDownloadBtn.textContent = "⚡ ENTER VIDEO KEY TO UNLOCK →";
       } else {
-        modalDownloadBtn.textContent = "⚡ UNLOCK FREE DOWNLOAD →";
+        modalDownloadBtn.textContent = "⚡ SUBSCRIBE TO UNLOCK DOWNLOAD →";
       }
     } else {
       modalDownloadBtn.textContent = "🔔 SUBSCRIBE FOR EARLY ACCESS →";
@@ -433,9 +438,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const isKeyUnlocked = activeDropItem.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
+      const isItemUnlocked = activeDropItem.requiresPassword 
+        ? (localStorage.getItem("kaiser_radar_unlocked") === "true") 
+        : (localStorage.getItem("kaiser_aim_unlocked") === "true");
 
-      if (isKeyUnlocked) {
+      if (isItemUnlocked) {
         triggerDirectDownload(activeDropItem);
       } else {
         closeProductModal();
@@ -469,8 +476,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateUnlockUI() {
     isAuraUnlocked = localStorage.getItem("kaiser_aura_unlocked") === "true";
     isRadarUnlocked = localStorage.getItem("kaiser_radar_unlocked") === "true";
-
+    const isAimUnlocked = localStorage.getItem("kaiser_aim_unlocked") === "true";
     const needsPassword = activeDropItem && activeDropItem.requiresPassword;
+    const isAimAssist = activeDropItem && activeDropItem.id === "kaiser-aim-assist";
+    const videoCallout = document.getElementById("video-watch-callout");
 
     if (passErrorMsg) {
       passErrorMsg.style.display = "none";
@@ -478,6 +487,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (needsPassword) {
+      // Audio Radar flow (Subscribe + 10-Letter Video Key)
+      if (videoCallout) videoCallout.style.display = "block";
       if (unlockModalTitle) unlockModalTitle.textContent = "Unlock Kaiser Audio Radar";
       if (unlockModalDesc) {
         unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube, then watch the official video (<a href='https://youtu.be/lD9Qxc41Egg' target='_blank' rel='noopener noreferrer' style='color:var(--color-cyan);text-decoration:underline;'>https://youtu.be/lD9Qxc41Egg</a>) to find the <b>10-letter secret password in ALL CAPS</b> to unlock your clean download.";
@@ -502,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (passwordStepContainer) passwordStepContainer.style.display = "flex";
         if (dlButtonGroup) dlButtonGroup.style.display = "none";
         if (dlVerifiedNote) dlVerifiedNote.style.display = "none";
-        if (stepDlLabel) stepDlLabel.textContent = "Enter 10-Letter Video Key";
+        if (stepDlLabel) stepDlLabel.textContent = "Watch Video & Enter 10-Letter Key";
 
         if (isAuraUnlocked) {
           if (stepSubBox) stepSubBox.classList.add("completed");
@@ -511,48 +522,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     } else {
-      // Open access items or items without password requirement
+      // Kaiser Aim Assist / Non-password flow (Subscribe to Unlock)
+      if (videoCallout) videoCallout.style.display = "none";
       if (passwordStepContainer) passwordStepContainer.style.display = "none";
       if (dlButtonGroup) dlButtonGroup.style.display = "flex";
 
-      const isRadar = activeDropItem && activeDropItem.id === "kaiser-audio-radar";
       if (unlockModalTitle) {
-        unlockModalTitle.textContent = isRadar ? "Unlock Kaiser Audio Radar (Audio ESP)" : "Subscribe to Unlock Download";
+        unlockModalTitle.textContent = isAimAssist ? "Subscribe to Unlock Kaiser Aim Assist" : "Subscribe to Unlock Download";
       }
       if (unlockModalDesc) {
-        if (isRadar) {
-          unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube to support the Rivals Resistance. <b>The dedicated ESP video is releasing soon on YouTube!</b> In the meantime, website visitors can download Kaiser Audio Radar v1.0 directly below.";
-        } else {
-          unlockModalDesc.innerHTML = "You get clean competitive freeware for <b>$0.00</b>, and I get one subscriber closer to saving Rivals. Hit subscribe below to unlock instantly.";
-        }
+        unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube to support the Rivals Resistance. Once subscribed, your clean download unlocks immediately for <b>$0.00 free</b>.";
       }
 
-      if (isAuraUnlocked) {
+      if (isAimUnlocked) {
         if (stepSubBox) stepSubBox.classList.add("completed");
         if (stepDlBox) stepDlBox.classList.add("completed");
         if (btnDlFinal) {
           btnDlFinal.disabled = false;
           btnDlFinal.className = "btn-dl-unlocked";
-          const label = isRadar ? "DOWNLOAD KAISER AUDIO RADAR (.ZIP FREE)" : (activeDropItem && activeDropItem.fileName ? `DIRECT DOWNLOAD (${activeDropItem.fileName})` : "DIRECT DOWNLOAD (.ZIP FREE)");
+          const label = activeDropItem && activeDropItem.fileName ? `DIRECT DOWNLOAD (${activeDropItem.fileName})` : "DIRECT DOWNLOAD (.ZIP FREE)";
           btnDlFinal.innerHTML = `<span>🔓 ${label}</span>`;
         }
         if (dlVerifiedNote) {
           dlVerifiedNote.style.display = "block";
-          dlVerifiedNote.textContent = isRadar 
-            ? "✓ Verified Clean · Kaiser-Audio-Radar-v1.0.zip · 100% Free & Unbannable"
-            : "✓ Clean Freeware · 100% Free & Verified Clean";
+          dlVerifiedNote.textContent = "✓ Microsoft WHQL Signed · KaiserAimAssist-v2.0.zip · 100% Free & Anti-Cheat Safe";
         }
-        if (stepDlLabel) stepDlLabel.textContent = "Verified · Ready for Download";
+        if (stepDlLabel) stepDlLabel.textContent = "Subscribed · Ready for Download";
       } else {
         if (stepSubBox) stepSubBox.classList.remove("completed");
         if (stepDlBox) stepDlBox.classList.remove("completed");
         if (btnDlFinal) {
           btnDlFinal.disabled = true;
           btnDlFinal.className = "btn-dl-locked";
-          btnDlFinal.innerHTML = `<span>🔒 Locked · Complete Step 1 Above</span>`;
+          btnDlFinal.innerHTML = `<span>🔒 Locked · Subscribe to Step 1 to Unlock</span>`;
         }
         if (dlVerifiedNote) dlVerifiedNote.style.display = "none";
-        if (stepDlLabel) stepDlLabel.textContent = "Download Software";
+        if (stepDlLabel) stepDlLabel.textContent = "Step 2: Download Software (Unlocked by Step 1)";
       }
     }
   }
@@ -704,9 +709,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnSubAction) {
     btnSubAction.addEventListener("click", () => {
       playClickSound();
-      if (isAuraUnlocked) return;
+      const isAimAssist = activeDropItem && activeDropItem.id === "kaiser-aim-assist";
 
-      if (stepDlLabel) stepDlLabel.textContent = "Checking Channel Aura...";
+      if (stepDlLabel) stepDlLabel.textContent = "Checking Subscription Status...";
       if (btnDlFinal) {
         btnDlFinal.innerHTML = `<span>⚡ Verifying Subscription... (3s)</span>`;
         btnDlFinal.style.borderColor = "var(--color-cyan)";
@@ -715,10 +720,13 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         isAuraUnlocked = true;
         localStorage.setItem("kaiser_aura_unlocked", "true");
+        if (isAimAssist) {
+          localStorage.setItem("kaiser_aim_unlocked", "true");
+        }
         updateUnlockUI();
         playUnlockSound();
         fireConfetti();
-        showToast("Aura Verified! Step 1 Complete.", "🎉");
+        showToast(isAimAssist ? "Subscribed! Kaiser Aim Assist Unlocked 🎉" : "Subscription Verified! Step 1 Complete.", "🎉");
         renderDrops();
       }, 3200);
     });
@@ -730,8 +738,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (activeDropItem && activeDropItem.requiresPassword) {
         const isKeyUnlocked = localStorage.getItem("kaiser_radar_unlocked") === "true";
         if (!isKeyUnlocked) return;
-      } else if (!isAuraUnlocked) {
-        return;
+      } else {
+        const isAimUnlocked = localStorage.getItem("kaiser_aim_unlocked") === "true";
+        if (!isAimUnlocked) return;
       }
       playClickSound();
       triggerDirectDownload(activeDropItem);
@@ -744,9 +753,17 @@ document.addEventListener("DOMContentLoaded", () => {
       playClickSound();
       isAuraUnlocked = true;
       localStorage.setItem("kaiser_aura_unlocked", "true");
+      const isAimAssist = activeDropItem && activeDropItem.id === "kaiser-aim-assist";
+      if (isAimAssist) {
+        localStorage.setItem("kaiser_aim_unlocked", "true");
+        playUnlockSound();
+        fireConfetti();
+        showToast("Subscription Verified! Kaiser Aim Assist Unlocked 🎉", "🎉");
+      } else {
+        playUnlockSound();
+        showToast("Subscription verified! Now enter the 10-letter video password.", "🔑");
+      }
       updateUnlockUI();
-      playUnlockSound();
-      showToast("Subscription verified! Now enter the 10-letter video password.", "🔑");
       renderDrops();
     });
   }
