@@ -2,7 +2,7 @@
  * KAISER HACKS - APP LOGIC (PERFORMANCE OPTIMIZED)
  * Dynamic drops rendering, live search, category filtering,
  * interactive Sellix-style modal, Web Audio cues, Confetti burst,
- * automated YouTube video embed connection, and high-converting Subscribe-to-Unlock gateway.
+ * automated YouTube video embed connection, and high-converting Subscribe + Video-Key Gateway.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,12 +27,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepSubBox = document.getElementById("step-sub-box");
   const stepDlBox = document.getElementById("step-dl-box");
   const stepDlLabel = document.getElementById("step-dl-label");
+  const dlButtonGroup = document.getElementById("dl-button-group");
+  const unlockModalTitle = document.getElementById("unlock-modal-title");
+  const unlockModalDesc = document.getElementById("unlock-modal-desc");
+
+  // Password Input in Unlock Modal
+  const passwordStepContainer = document.getElementById("password-step-container");
+  const unlockPassInput = document.getElementById("unlock-pass-input");
+  const btnVerifyKey = document.getElementById("btn-verify-key");
+  const passErrorMsg = document.getElementById("pass-error-msg");
 
   // State
   let currentCategory = "all";
   let searchQuery = "";
   let activeDropItem = (typeof KAISER_DROPS !== "undefined" && KAISER_DROPS.length > 0) ? KAISER_DROPS[0] : null;
   let isAuraUnlocked = localStorage.getItem("kaiser_aura_unlocked") === "true";
+  let isRadarUnlocked = localStorage.getItem("kaiser_radar_unlocked") === "true";
 
   // ============================================================================
   // 1. YouTube Video Embed Auto-Connector & Autoplay Controller
@@ -53,17 +63,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnUnmute = document.getElementById("btn-unmute-sound");
 
     // Standard high-converting autoplay: starts playing immediately on page load
-    // Muted by default so all modern browsers (Chrome/Edge/Safari/Firefox) allow immediate video stream
     showcaseIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1&controls=1&rel=0`;
 
     function playWithSound() {
-      // Send postMessage commands if iframe is already active
       try {
         showcaseIframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
         showcaseIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
       } catch (_) {}
 
-      // Guarantee unmuted playback with user click gesture
       if (showcaseIframe.src.includes("mute=1")) {
         showcaseIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=0&enablejsapi=1&controls=1&rel=0`;
       }
@@ -81,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Clicking anywhere on showcase links scrolls to video & enables sound
     document.querySelectorAll('a[href="#showcase"]').forEach(link => {
       link.addEventListener("click", () => {
         playWithSound();
@@ -92,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Check if arriving with #showcase or ?play=1 or ?video=1
     if (window.location.hash === "#showcase" || window.location.search.includes("play=1") || window.location.search.includes("video=1")) {
       const onFirstInteract = () => {
         playWithSound();
@@ -124,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return audioCtx;
   }
 
-  // Soft subtle cyber click
   function playClickSound() {
     try {
       const ctx = getAudioContext();
@@ -143,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (_) {}
   }
 
-  // Victorious 4-tone unlock chord
   function playUnlockSound() {
     try {
       const ctx = getAudioContext();
@@ -164,6 +167,24 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (_) {}
   }
 
+  function playErrorSound() {
+    try {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.22);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.22);
+    } catch (_) {}
+  }
+
   // ============================================================================
   // 3. Confetti Particle Celebration (GPU Optimized Canvas)
   // ============================================================================
@@ -173,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Show canvas only when animating
     canvas.style.display = "block";
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -231,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         cancelAnimationFrame(animationFrame);
-        canvas.style.display = "none"; // Hide completely to release GPU resources
+        canvas.style.display = "none";
       }
     }
 
@@ -297,8 +317,9 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = `drop-card ${item.status === "coming_soon" ? "coming-soon" : ""}`;
       card.setAttribute("data-id", item.id);
 
+      const isItemUnlocked = item.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
       const btnLabel = item.status === "active" 
-        ? (isAuraUnlocked ? "DOWNLOAD NOW" : "GET FREE") 
+        ? (isItemUnlocked ? "DOWNLOAD NOW" : (item.requiresPassword ? "KEY UNLOCK" : "GET FREE")) 
         : "DETAILS";
 
       card.innerHTML = `
@@ -363,8 +384,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Modal CTA Button text based on status and unlock state
     if (item.status === "active") {
-      if (isAuraUnlocked) {
+      const isKeyUnlocked = item.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
+      if (isKeyUnlocked) {
         modalDownloadBtn.textContent = "⚡ DIRECT DOWNLOAD (.ZIP FREE)";
+      } else if (item.requiresPassword) {
+        modalDownloadBtn.textContent = "⚡ ENTER VIDEO KEY TO UNLOCK →";
       } else {
         modalDownloadBtn.textContent = "⚡ UNLOCK FREE DOWNLOAD →";
       }
@@ -409,8 +433,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // If active tool:
-      if (isAuraUnlocked) {
+      const isKeyUnlocked = activeDropItem.requiresPassword ? (localStorage.getItem("kaiser_radar_unlocked") === "true") : isAuraUnlocked;
+
+      if (isKeyUnlocked) {
         triggerDirectDownload(activeDropItem);
       } else {
         closeProductModal();
@@ -420,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ============================================================================
-  // 7. Subscribe-to-Unlock Gateway Modal
+  // 7. Subscribe-to-Unlock + Password Gateway Modal
   // ============================================================================
   function openUnlockGateway(item) {
     activeDropItem = item;
@@ -429,6 +454,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUnlockUI();
     unlockModal.classList.add("open");
     document.body.style.overflow = "hidden";
+
+    if (item && item.requiresPassword && unlockPassInput) {
+      setTimeout(() => unlockPassInput.focus(), 250);
+    }
   }
 
   function closeUnlockGateway() {
@@ -438,35 +467,128 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateUnlockUI() {
-    if (isAuraUnlocked) {
-      if (stepSubBox) stepSubBox.classList.add("completed");
-      if (stepDlBox) stepDlBox.classList.add("completed");
-      if (btnDlFinal) {
-        btnDlFinal.disabled = false;
-        btnDlFinal.className = "btn-dl-unlocked";
-        btnDlFinal.innerHTML = `<span>🔓 DIRECT DOWNLOAD (.ZIP FREE)</span>`;
+    isAuraUnlocked = localStorage.getItem("kaiser_aura_unlocked") === "true";
+    isRadarUnlocked = localStorage.getItem("kaiser_radar_unlocked") === "true";
+
+    const needsPassword = activeDropItem && activeDropItem.requiresPassword;
+
+    if (passErrorMsg) {
+      passErrorMsg.style.display = "none";
+      passErrorMsg.textContent = "";
+    }
+
+    if (needsPassword) {
+      if (unlockModalTitle) unlockModalTitle.textContent = "Unlock Kaiser Audio Radar";
+      if (unlockModalDesc) {
+        unlockModalDesc.innerHTML = "Subscribe to Kaiser on YouTube to support the Rivals Resistance, then enter the 10-letter secret video password (revealed across the YouTube video) to download.";
       }
-      if (dlVerifiedNote) {
-        dlVerifiedNote.style.display = "block";
-      }
-      if (stepDlLabel) {
-        stepDlLabel.textContent = "Verified · Ready for Download";
+
+      if (isRadarUnlocked) {
+        if (stepSubBox) stepSubBox.classList.add("completed");
+        if (stepDlBox) stepDlBox.classList.add("completed");
+        if (passwordStepContainer) passwordStepContainer.style.display = "none";
+        if (dlButtonGroup) dlButtonGroup.style.display = "flex";
+        if (btnDlFinal) {
+          btnDlFinal.disabled = false;
+          btnDlFinal.className = "btn-dl-unlocked";
+          btnDlFinal.innerHTML = `<span>🔓 DOWNLOAD KAISER AUDIO RADAR (.ZIP FREE)</span>`;
+        }
+        if (dlVerifiedNote) {
+          dlVerifiedNote.style.display = "block";
+          dlVerifiedNote.textContent = "✓ Key Verified (KEYKAILOVE) · Kaiser-Audio-Radar-v1.0.zip · 100% Free & Unbannable";
+        }
+        if (stepDlLabel) stepDlLabel.textContent = "Key Verified · Ready for Download";
+      } else {
+        if (passwordStepContainer) passwordStepContainer.style.display = "flex";
+        if (dlButtonGroup) dlButtonGroup.style.display = "none";
+        if (dlVerifiedNote) dlVerifiedNote.style.display = "none";
+        if (stepDlLabel) stepDlLabel.textContent = "Enter 10-Letter Video Key";
+
+        if (isAuraUnlocked) {
+          if (stepSubBox) stepSubBox.classList.add("completed");
+        } else {
+          if (stepSubBox) stepSubBox.classList.remove("completed");
+        }
       }
     } else {
-      if (stepSubBox) stepSubBox.classList.remove("completed");
-      if (stepDlBox) stepDlBox.classList.remove("completed");
-      if (btnDlFinal) {
-        btnDlFinal.disabled = true;
-        btnDlFinal.className = "btn-dl-locked";
-        btnDlFinal.innerHTML = `<span>🔒 Locked · Complete Step 1 Above</span>`;
+      // Standard item (Aim Assist)
+      if (passwordStepContainer) passwordStepContainer.style.display = "none";
+      if (dlButtonGroup) dlButtonGroup.style.display = "flex";
+      if (unlockModalTitle) unlockModalTitle.textContent = "Subscribe to Unlock Download";
+      if (unlockModalDesc) {
+        unlockModalDesc.innerHTML = "You get clean competitive freeware for <b>$0.00</b>, and I get one subscriber closer to saving Rivals. Hit subscribe below to unlock instantly.";
       }
-      if (dlVerifiedNote) {
-        dlVerifiedNote.style.display = "none";
-      }
-      if (stepDlLabel) {
-        stepDlLabel.textContent = "Download Software";
+
+      if (isAuraUnlocked) {
+        if (stepSubBox) stepSubBox.classList.add("completed");
+        if (stepDlBox) stepDlBox.classList.add("completed");
+        if (btnDlFinal) {
+          btnDlFinal.disabled = false;
+          btnDlFinal.className = "btn-dl-unlocked";
+          btnDlFinal.innerHTML = `<span>🔓 DIRECT DOWNLOAD (.ZIP FREE)</span>`;
+        }
+        if (dlVerifiedNote) {
+          dlVerifiedNote.style.display = "block";
+          dlVerifiedNote.textContent = "✓ Clean Freeware · 100% Free & Verified Clean";
+        }
+        if (stepDlLabel) stepDlLabel.textContent = "Verified · Ready for Download";
+      } else {
+        if (stepSubBox) stepSubBox.classList.remove("completed");
+        if (stepDlBox) stepDlBox.classList.remove("completed");
+        if (btnDlFinal) {
+          btnDlFinal.disabled = true;
+          btnDlFinal.className = "btn-dl-locked";
+          btnDlFinal.innerHTML = `<span>🔒 Locked · Complete Step 1 Above</span>`;
+        }
+        if (dlVerifiedNote) dlVerifiedNote.style.display = "none";
+        if (stepDlLabel) stepDlLabel.textContent = "Download Software";
       }
     }
+  }
+
+  // Password verification logic
+  function handlePasswordVerify() {
+    if (!unlockPassInput) return;
+    const rawVal = unlockPassInput.value.trim().toUpperCase().replace(/[\s-]/g, "");
+    const targetKey = (activeDropItem && activeDropItem.passwordKey) ? activeDropItem.passwordKey : "KEYKAILOVE";
+
+    if (rawVal === targetKey) {
+      playUnlockSound();
+      fireConfetti();
+      localStorage.setItem("kaiser_radar_unlocked", "true");
+      isAuraUnlocked = true;
+      localStorage.setItem("kaiser_aura_unlocked", "true");
+      showToast("Access Granted! Key Verified: KEYKAILOVE", "🎉");
+      updateUnlockUI();
+      renderDrops();
+      triggerDirectDownload(activeDropItem);
+    } else {
+      playErrorSound();
+      if (passErrorMsg) {
+        passErrorMsg.textContent = "❌ Invalid Key! Watch the full video to collect all 10 letters: K-E-Y-K-A-I-L-O-V-E (No skipping!).";
+        passErrorMsg.style.display = "block";
+      }
+      unlockPassInput.classList.add("shake-error");
+      setTimeout(() => unlockPassInput.classList.remove("shake-error"), 500);
+      showToast("Incorrect key! Check the YouTube video.", "⚠️");
+    }
+  }
+
+  if (btnVerifyKey) {
+    btnVerifyKey.addEventListener("click", () => {
+      playClickSound();
+      handlePasswordVerify();
+    });
+  }
+
+  if (unlockPassInput) {
+    unlockPassInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        playClickSound();
+        handlePasswordVerify();
+      }
+    });
   }
 
   if (unlockCloseBtn) {
@@ -490,7 +612,6 @@ document.addEventListener("DOMContentLoaded", () => {
       playClickSound();
       if (isAuraUnlocked) return;
 
-      // Start 3-second verification sequence
       if (stepDlLabel) stepDlLabel.textContent = "Checking Channel Aura...";
       if (btnDlFinal) {
         btnDlFinal.innerHTML = `<span>⚡ Verifying Subscription... (3s)</span>`;
@@ -503,16 +624,21 @@ document.addEventListener("DOMContentLoaded", () => {
         updateUnlockUI();
         playUnlockSound();
         fireConfetti();
-        showToast("Aura Verified! Download permanently unlocked.", "🎉");
+        showToast("Aura Verified! Step 1 Complete.", "🎉");
         renderDrops();
       }, 3200);
     });
   }
 
-  // Step 2: Download Button Click
+  // Step 2: Download Button Click (Standard flow)
   if (btnDlFinal) {
     btnDlFinal.addEventListener("click", () => {
-      if (!isAuraUnlocked) return;
+      if (activeDropItem && activeDropItem.requiresPassword) {
+        const isKeyUnlocked = localStorage.getItem("kaiser_radar_unlocked") === "true";
+        if (!isKeyUnlocked) return;
+      } else if (!isAuraUnlocked) {
+        return;
+      }
       playClickSound();
       triggerDirectDownload(activeDropItem);
     });
@@ -527,25 +653,25 @@ document.addEventListener("DOMContentLoaded", () => {
       updateUnlockUI();
       playUnlockSound();
       fireConfetti();
-      showToast("Real one recognized! Aura verified. Download ready.", "😎");
+      showToast("Real one recognized! Aura verified.", "😎");
       renderDrops();
     });
   }
 
   // Trigger file download
   function triggerDirectDownload(item) {
-    let downloadUrl = (item && item.downloadUrl) ? item.downloadUrl : "downloads/KaiserAimAssist-v2.0.zip";
+    let downloadUrl = (item && item.downloadUrl) ? item.downloadUrl : "downloads/Kaiser-Audio-Radar-v1.0.zip";
+    let fileName = (item && item.fileName) ? item.fileName : "Kaiser-Audio-Radar-v1.0.zip";
     
-    // Check if user specified a GitHub Release link for unlimited bandwidth
-    if (typeof KAISER_SITE_INFO !== "undefined" && KAISER_SITE_INFO.githubReleaseUrl && KAISER_SITE_INFO.githubReleaseUrl.trim().length > 0) {
+    if (item && item.id === "kaiser-aim-assist" && typeof KAISER_SITE_INFO !== "undefined" && KAISER_SITE_INFO.githubReleaseUrl) {
       downloadUrl = KAISER_SITE_INFO.githubReleaseUrl.trim();
     }
 
-    showToast("Launching Kaiser Aim Assist v2.0 download...", "🚀");
+    showToast(`Launching ${item ? item.title : 'download'}...`, "🚀");
 
     const a = document.createElement("a");
     a.href = downloadUrl;
-    a.download = "KaiserAimAssist-v2.0.zip";
+    a.download = fileName;
     if (downloadUrl.startsWith("http")) {
       a.target = "_blank";
       a.rel = "noopener noreferrer";

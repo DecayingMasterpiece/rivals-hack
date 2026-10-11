@@ -2,25 +2,25 @@
  * KAISER HACKS - DATA-DRIVEN DROPS & SITE CONFIGURATION
  * 
  * ==============================================================================
- * YOUTUBE VIDEO CONNECTION:
- * Connected to video: https://youtu.be/OUNl81bv4f0 (ID: OUNl81bv4f0)
+ * THE RIVALS RESISTANCE:
+ * Fighting to save Roblox Rivals against closet cheaters.
+ * Autonomous Watchdog anti-cheat sentry launching at 100K subscribers.
  * ==============================================================================
  */
 
 const KAISER_SITE_INFO = {
   brandName: "KAISER HACKS",
-  brandSubtitle: "The End of All Stories · Crushing Overpriced Cheat Scams",
+  brandSubtitle: "The End of All Stories · Saving Roblox Rivals",
   
   // 👉 CONNECTED YOUTUBE SHOWCASE VIDEO:
   videoEmbedId: "OUNl81bv4f0", 
 
-  // 👉 OFFICIAL GITHUB RELEASES DOWNLOAD LINK (UNLIMITED BANDWIDTH - NEVER RUNS OUT OF CREDITS):
-  // When you create a Release on GitHub, you can paste the KaiserAimAssist-v2.0.zip release link here!
-  // Example: "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/releases/latest/download/KaiserAimAssist-v2.0.zip"
-  // If left empty (""), it smoothly downloads the file from the local repository folder.
-  githubReleaseUrl: "https://github.com/toufiqbd4200-sketch/rivals-hack/releases/download/v2.0/KaiserAimAssist-v2.0.zip",
+  // 👉 OFFICIAL RADAR DIRECT DOWNLOAD:
+  radarDownloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
+  radarSecretKey: "KEYKAILOVE",
 
-  // 👉 LOCAL FALLBACK DIRECT DOWNLOAD:
+  // 👉 AIM ASSIST DIRECT DOWNLOAD:
+  githubReleaseUrl: "https://github.com/toufiqbd4200-sketch/rivals-hack/releases/download/v2.0/KaiserAimAssist-v2.0.zip",
   directDownloadUrl: "downloads/KaiserAimAssist-v2.0.zip",
 
   // 👉 YOUR YOUTUBE CHANNEL FOR SUBSCRIBE-TO-UNLOCK:
@@ -39,37 +39,84 @@ const KAISER_SITE_INFO = {
 
 const KAISER_DROPS = [
   {
-    id: "kaiser-aim-assist",
-    title: "Kaiser Aim Assist v2.0 (Clean Patch)",
-    subtitle: "Universal Mouse Anti-Jitter & Aim Stabilizer",
+    id: "kaiser-audio-radar",
+    title: "Kaiser Audio Radar v1.0 (The Equalizer · Audio ESP)",
+    subtitle: "Universal Stereo Sound Direction Visualizer (HUD & Radar)",
     status: "active", // "active" | "coming_soon"
+    statusLabel: "AVAILABLE NOW · 100% UNBANNABLE",
+    tag: "THE EQUALIZER",
+    tagColor: "cyan",
+    image: "assets/kaiser-radar.png",
+    originalPrice: "$39.99",
+    currentPrice: "$0.00 FREE",
+    downloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
+    fileName: "Kaiser-Audio-Radar-v1.0.zip",
+    requiresPassword: true,
+    passwordKey: "KEYKAILOVE",
+    downloadLabel: "UNLOCK FREE DOWNLOAD",
+    category: "active",
+    badge: "100% UNBANNABLE · ACCESSIBILITY STANDARD",
+    shortDesc: "Visualizes footsteps and gunfire directly on your crosshair and mini radar. 100% legal, zero memory injection, levels the playing field against closet cheaters.",
+    description: "Closet cheaters in Roblox Rivals pay $25/month to Gayrax just to hide behind walls with silent aim, gaslighting legit players into thinking they have pro game sense. Kaiser Audio Radar is the Equalizer. It reads stereo audio loopback directly from your sound card to project real-time footstep and gunfire directions onto your screen. It does not touch Roblox's memory, inject DLLs, or modify game files. It uses the exact same legal principle as Fortnite's Visual Sound Effects wheel. Equalize your ranked lobbies without risking your account, until our Watchdog bans rage cheaters for good.",
+    features: [
+      "Center Crosshair HUD — Left/right sound brackets flash next to your crosshair so you pre-fire before enemies peek",
+      "360° Tactical Mini Radar — Floating compass beam pinpoints enemy movement, reloads, and footsteps",
+      "100% Ban-Proof & Hyperion Safe — Pure external sound card loopback analysis with 0 game memory injection",
+      "Universal Cross-Platform Engine — Native high-speed Windows app + Universal Mac/Windows Python fallback",
+      "Auto-Dependency Installer — 1-click launcher handles setup and audio endpoints automatically",
+      "Zero Game File Tampering — Never triggers anti-cheat heuristics; works across all future game updates",
+      "Closes the Gap on Closet Cheaters — Punishes $25/mo closet cheat buyers with pure fair-play spatial awareness",
+      "1-Click Toggle Controls — Press Home for Crosshair HUD, End for Mini Radar"
+    ],
+    setupSteps: [
+      "Subscribe to Kaiser on YouTube to support the crusade to save Rivals.",
+      "Enter the 10-letter secret video password (revealed across the YouTube video: KEYKAILOVE).",
+      "Download and extract 'Kaiser-Audio-Radar-v1.0.zip'.",
+      "Run 'Run_Windows.bat' on Windows or 'Run_Mac.command' on Mac.",
+      "Select your headphones/speakers from the dropdown, hit Start, and dominate your matches with complete spatial awareness!"
+    ],
+    stats: {
+      latency: "< 0.01ms (Real-time Audio)",
+      bans: "0 (100% Legal Accessibility)",
+      muscleMemory: "Visual Cues",
+      cost: "$0.00 Free Forever"
+    }
+  },
+  {
+    id: "kaiser-aim-assist",
+    title: "Kaiser Aim Assist v2.1 (Anti-Cheat & Avira Safety Patch)",
+    subtitle: "Universal Mouse Anti-Jitter & Aim Stabilizer",
+    status: "active",
     statusLabel: "AVAILABLE NOW · CLEAN PATCH",
     tag: "AURA STABILIZER",
     tagColor: "emerald",
     image: "assets/kaiser-logo.jpg",
     originalPrice: "$49.99",
     currentPrice: "$0.00 FREE",
-    downloadUrl: "downloads/KaiserAimAssist-v2.0.zip", // Official Direct CDN Download
-    mirrorUrl: "",
+    downloadUrl: "https://github.com/toufiqbd4200-sketch/rivals-hack/releases/download/v2.0/KaiserAimAssist-v2.0.zip",
+    fileName: "KaiserAimAssist-v2.0.zip",
+    requiresPassword: false,
     downloadLabel: "UNLOCK FREE DOWNLOAD",
     category: "active",
     badge: "100% CLEAN · 1:1 PASSTHROUGH",
-    shortDesc: "Strips hand tremors, tension wobbles, and shaky mouse aim. 100% legit, zero bans, infinite aura.",
+    shortDesc: "Strips hand tremors, tension wobbles, and shaky mouse aim. 100% legit, WHQL-signed, Avira safe, infinite aura.",
     description: "Imagine paying $50 a month to a cheat seller named after a bird just to get hardware banned in three business days. Couldn't be me. Kaiser Hacks gives you physical mouse stabilization at the system level. No shady memory injections, no game file tampering—just crystal clean, locked-in aim that feels like natural talent. You hit clips, cheat sellers cry, and everyone wins.",
     features: [
       "Zero Shaky Aim — Removes micro-jitters, hand tension wobbles, and sensor noise",
-      "Strict 1:1 Muscle Memory — 0.0 Output DPI preserves your exact physical mouse sensitivity",
+      "Strict 1:1 Muscle Memory — 1:1 hardware passthrough preserves your exact physical mouse sensitivity",
       "Universal Hardware Compatibility — Works identically on 400, 800, 1600, or 3200 DPI",
+      "Official Microsoft WHQL Driver — Authentic certified rawaccel.sys, 0 fake or renamed files",
+      "1-Click Emergency Mouse Restore — Includes EMERGENCY-RESTORE-MOUSE.cmd for 100% peace of mind",
+      "Zero Antivirus Conflict — Fixed Avira/Defender heuristic false positives with native PE versioning",
       "Zero Artificial Angle Snapping — 0.0° default ensures natural diagonal flicks and headshots",
       "100% Anti-Cheat Safe — Uses clean Windows mouse filter driver (safe on Valorant, Apex, CS2, Rivals)",
       "Smart Discord/Chat Disable — Type freely in chat without the hotkey getting in your way",
       "Head-Level Tracking Lock — Keeps your horizontal crosshair sweeps steady at head height",
-      "Live Jitter Benchmark — Test raw vs stabilized cursor motion directly on your screen",
       "One-Click Power Toggle — Turn it on or off instantly with a single button press"
     ],
     setupSteps: [
       "Hit the Subscribe button below to unlock your free download.",
-      "Download the verified ZIP package directly from the high-speed CDN.",
+      "Download the verified v2.1 ZIP package directly from the high-speed CDN.",
       "Extract the downloaded ZIP package anywhere on your PC.",
       "Right-click 'INSTALL-KAISER.cmd' and select 'Run as Administrator'.",
       "Restart your computer once so Windows attaches the clean mouse filter to your hardware.",
@@ -83,72 +130,74 @@ const KAISER_DROPS = [
     }
   },
   {
-    id: "espn",
-    title: "Weekly Drop #02: ESPN",
-    subtitle: "Dynamic Crosshair & Tactical HUD Overlay",
+    id: "the-watchdog",
+    title: "The Watchdog AI (Anti-Cheat Sentry)",
+    subtitle: "Autonomous Server-Side Moderator for Nosni Games",
     status: "coming_soon",
-    statusLabel: "DROPPING NEXT WEEK",
-    tag: "DROPPING NEXT WEEK",
-    tagColor: "cyan",
-    image: "assets/espn.jpg", // Generated high-tech ESPN crosshair logo
-    originalPrice: "$39.99",
-    currentPrice: "$0.00 FREE",
+    statusLabel: "LAUNCHING AT 100K SUBSCRIBERS / NOSNI PARTNERSHIP",
+    tag: "THE WATCHDOG",
+    tagColor: "amber",
+    image: "assets/espn.jpg",
+    originalPrice: "Priceless",
+    currentPrice: "$0.00 FOR PLAYERS",
     downloadUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation?sub_confirmation=1",
-    mirrorUrl: "",
-    downloadLabel: "SUBSCRIBE FOR EARLY ACCESS",
+    requiresPassword: false,
+    downloadLabel: "SUBSCRIBE TO SUPPORT THE PETITION",
     category: "upcoming",
-    badge: "IN TESTING",
-    shortDesc: "Ultra-crisp transparent crosshair overlay with frame-perfect recoil guides. Zero FPS drop.",
-    description: "Our second free rival tool dropping next week. Why buy an expensive overlay tool when ESPN gives you a fully transparent, hardware-accelerated crosshair HUD with bloom indicators, recoil guides, and zero game impact? Subscribe now so you don't miss the drop.",
+    badge: "IN DEVELOPMENT · NOSNI PARTNERSHIP",
+    shortDesc: "Autonomous 24/7 backend AI sentry that reviews reported gameplay telemetry and bans rage cheaters within 2–3 minutes.",
+    description: "The permanent cure for Rivals cheating. An autonomous digital moderator living inside the server architecture. When players report a cheater, the sentry analyzes raw gameplay telemetry with consent, verifies angular snaps and flight speed, and strikes them with a permanent ban before the match finishes. We are bringing this directly to Nosni Games once we hit 100,000 subscribers and verification.",
     features: [
-      "Hardware-accelerated transparent HUD overlay (DirectX & Vulkan)",
-      "Dynamic crosshair recoil bloom & reset indicators",
-      "Head-height alignment guide for tactical shooters",
-      "100% Freeware — Free forever to help surpass Corax"
+      "Autonomous 24/7 Server Sentry — Operates continuously without relying on slow manual ticket backlogs",
+      "15-Second Telemetry Snapshots — Analyzes player camera angles, impossible flick speeds, and physics anomalies",
+      "Instant 2–3 Minute Match Bans — Eradicates rage cheaters before they can complete a single round",
+      "Script Signature Suffocation — Fingerprints injector payloads to neutralize cheat updates immediately",
+      "Exclusive In-Game Security Badge — Reserved for founding channel subscribers who stood with us from day one"
     ],
     setupSteps: [
-      "Dropping next week! Subscribe to Kaiser on YouTube to get notified the second it drops.",
-      "Zero installation required — standalone portable freeware."
+      "Subscribe to Kaiser on YouTube to build our subscriber leverage for Nosni Games.",
+      "Support every video and short to get the channel verified.",
+      "At 100,000 subscribers, we sit down with Nosni Games to integrate The Watchdog directly."
     ],
     stats: {
-      latency: "0 FPS Drop",
-      bans: "100% Safe Overlay",
-      muscleMemory: "Visual Aid",
+      latency: "Real-time Telemetry",
+      bans: "Instant Server Bans",
+      muscleMemory: "Clean Matchmaking",
       cost: "$0.00 Free"
     }
   },
   {
-    id: "korex-config",
-    title: "Weekly Drop #03: Korex Config",
-    subtitle: "Swift Settings & Pro Sensitivity Calibration",
+    id: "kaiser-aimbot",
+    title: "Kaiser Aimbot (Leverage Software)",
+    subtitle: "The Final Leverage Bomb for Developer Attention",
     status: "coming_soon",
-    statusLabel: "IN PIPELINE",
-    tag: "SWIFT SETTINGS",
-    tagColor: "amber",
-    image: "assets/korex.jpg", // Generated dark anime cyber Korex logo
-    originalPrice: "$29.99",
+    statusLabel: "DROPPING AT 35,000 SUBSCRIBERS",
+    tag: "35K MILESTONE",
+    tagColor: "purple",
+    image: "assets/korex.jpg",
+    originalPrice: "$99.99",
     currentPrice: "$0.00 FREE",
     downloadUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation?sub_confirmation=1",
-    mirrorUrl: "",
-    downloadLabel: "SUBSCRIBE TO JOIN WAITLIST",
+    requiresPassword: false,
+    downloadLabel: "SUBSCRIBE FOR 35K DROP",
     category: "upcoming",
-    badge: "CONFIG PACK",
-    shortDesc: "Pro sensitivity curves, sensor smoothing presets, and zero-recoil calibration profiles.",
-    description: "Curated pro settings packs for Marvel Rivals, Apex Legends, and Valorant. Replaces paid 'streamer configs' with open, verified configurations calibrated for maximum precision. Help me pass Corax in subs and this entire library is yours.",
+    badge: "UNLEASHING AT 35K SUBS",
+    shortDesc: "Releasing to the public at 35,000 subscribers on YouTube. The ultimate demonstration of capability.",
+    description: "You think an audio radar is where my skill stops? You think an AI watchdog is my limit? When this channel hits 35,000 subscribers, I am releasing my next software: an aimbot. Subscribe now and watch what happens when we unleash undeniable leverage.",
     features: [
-      "Pro sensitivity profiles tuned for low, medium, and high DPI mice",
-      "Custom anti-jitter profiles tuned for 12ms and 18ms filters",
-      "One-click config importer for Kaiser Aim Assist",
-      "Community verified to rival Corax's paid configs"
+      "Demonstration of AI Neural Engineering & Machine Vision",
+      "Forces Developers to Acknowledge the Anti-Cheat Crisis",
+      "Drops Completely Free at the 35K YouTube Milestone",
+      "Zero Paywalls — Destroying Paid Cheat Markets Forever"
     ],
     setupSteps: [
-      "Included as pre-tuned profiles in future Kaiser Aim Assist updates.",
-      "Loadable directly via the Kaiser UI presets menu."
+      "Subscribe to Kaiser on YouTube.",
+      "Software unlocks automatically the moment the channel crosses 35,000 subscribers."
     ],
     stats: {
-      latency: "Instant",
-      bans: "Clean Configs",
-      muscleMemory: "Pro Tuned",
+      latency: "Frame-Perfect",
+      bans: "Community Leverage",
+      muscleMemory: "Total Domination",
       cost: "$0.00 Free"
     }
   }
