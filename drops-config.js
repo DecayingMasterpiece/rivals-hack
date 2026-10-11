@@ -12,12 +12,13 @@ const KAISER_SITE_INFO = {
   brandName: "KAISER HACKS",
   brandSubtitle: "The End of All Stories · Saving Roblox Rivals",
   
-  // 👉 CONNECTED YOUTUBE SHOWCASE VIDEO:
-  videoEmbedId: "OUNl81bv4f0", 
+  // 👉 CONNECTED YOUTUBE SHOWCASE VIDEO (Placeholder until official video releases):
+  videoEmbedId: "dQw4w9WgXcQ", 
+  videoWatchUrl: "https://www.youtube.com/@KaiserEverhart-Adaptation/videos",
 
   // 👉 OFFICIAL RADAR DIRECT DOWNLOAD:
   radarDownloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
-  radarSecretKey: "KEYKAILOVE",
+  radarSecretHash: "038377ce6cd93768368075691b7086c97ded38d84d469b64740fced9d516628f",
 
   // 👉 AIM ASSIST DIRECT DOWNLOAD:
   githubReleaseUrl: "https://github.com/toufiqbd4200-sketch/rivals-hack/releases/download/v2.0/KaiserAimAssist-v2.0.zip",
@@ -51,9 +52,9 @@ const KAISER_DROPS = [
     currentPrice: "$0.00 FREE",
     downloadUrl: "downloads/Kaiser-Audio-Radar-v1.0.zip",
     fileName: "Kaiser-Audio-Radar-v1.0.zip",
-    requiresPassword: true,
-    passwordKey: "KEYKAILOVE",
-    downloadLabel: "UNLOCK FREE DOWNLOAD",
+    requiresPassword: false, // Set to false for now so visitors can install directly; toggle to true once video goes live
+    passwordHash: "038377ce6cd93768368075691b7086c97ded38d84d469b64740fced9d516628f",
+    downloadLabel: "DOWNLOAD NOW · FREEWARE",
     category: "active",
     badge: "100% UNBANNABLE · ACCESSIBILITY STANDARD",
     shortDesc: "Visualizes footsteps and gunfire directly on your crosshair and mini radar. 100% legal, zero memory injection, levels the playing field against closet cheaters.",
@@ -70,7 +71,7 @@ const KAISER_DROPS = [
     ],
     setupSteps: [
       "Subscribe to Kaiser on YouTube to support the crusade to save Rivals.",
-      "Enter the 10-letter secret video password (revealed across the YouTube video: KEYKAILOVE).",
+      "Click Unlock to begin your direct download (instant download for website visitors).",
       "Download and extract 'Kaiser-Audio-Radar-v1.0.zip'.",
       "Run 'Run_Windows.bat' on Windows or 'Run_Mac.command' on Mac.",
       "Select your headphones/speakers from the dropdown, hit Start, and dominate your matches with complete spatial awareness!"

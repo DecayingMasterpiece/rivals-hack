@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (dlVerifiedNote) {
           dlVerifiedNote.style.display = "block";
-          dlVerifiedNote.textContent = "✓ Key Verified (KEYKAILOVE) · Kaiser-Audio-Radar-v1.0.zip · 100% Free & Unbannable";
+          dlVerifiedNote.textContent = "✓ Verified Clean · Kaiser-Audio-Radar-v1.0.zip · 100% Free & Unbannable";
         }
         if (stepDlLabel) stepDlLabel.textContent = "Key Verified · Ready for Download";
       } else {
@@ -546,26 +546,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // SHA-256 helper for client-side password hash comparison (Zero plaintext in code)
+  async function computeSha256(str) {
+    const enc = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
   // Password verification logic
-  function handlePasswordVerify() {
+  async function handlePasswordVerify() {
     if (!unlockPassInput) return;
     const rawVal = unlockPassInput.value.trim().toUpperCase().replace(/[\s-]/g, "");
-    const targetKey = (activeDropItem && activeDropItem.passwordKey) ? activeDropItem.passwordKey : "KEYKAILOVE";
+    if (!rawVal) return;
 
-    if (rawVal === targetKey) {
+    const targetHash = (activeDropItem && activeDropItem.passwordHash) 
+      ? activeDropItem.passwordHash 
+      : (window.KAISER_SITE_INFO && KAISER_SITE_INFO.radarSecretHash ? KAISER_SITE_INFO.radarSecretHash : "038377ce6cd93768368075691b7086c97ded38d84d469b64740fced9d516628f");
+
+    const inputHash = await computeSha256(rawVal);
+
+    if (inputHash === targetHash) {
       playUnlockSound();
       fireConfetti();
       localStorage.setItem("kaiser_radar_unlocked", "true");
       isAuraUnlocked = true;
       localStorage.setItem("kaiser_aura_unlocked", "true");
-      showToast("Access Granted! Key Verified: KEYKAILOVE", "🎉");
+      showToast("Access Granted! Secret Key Verified", "🎉");
       updateUnlockUI();
       renderDrops();
       triggerDirectDownload(activeDropItem);
     } else {
       playErrorSound();
       if (passErrorMsg) {
-        passErrorMsg.textContent = "❌ Invalid Key! Watch the full video to collect all 10 letters: K-E-Y-K-A-I-L-O-V-E (No skipping!).";
+        passErrorMsg.textContent = "❌ Invalid Key! Watch the full video to collect all 10 letters (No skipping!).";
         passErrorMsg.style.display = "block";
       }
       unlockPassInput.classList.add("shake-error");
